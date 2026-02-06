@@ -16,17 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from students.views import StudentViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 from rest_framework.authtoken.views import obtain_auth_token
 
-
-# Router for APIs
-router = DefaultRouter()
-router.register('students', StudentViewSet)
 
 # Swagger schema
 schema_view = get_schema_view(
@@ -41,10 +35,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),  # Your API
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('api/token/', obtain_auth_token),   # ✅ add this
+    path('api/', include('students.urls')),
+    path('api/token/', obtain_auth_token),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
